@@ -80,6 +80,33 @@ Our platform is built with a microservices architecture:
 - **Type Safety**: Full TypeScript coverage across all repositories
 - **Code Quality**: ESLint, Prettier, and automated CI checks
 
+## Documentation
+
+### 📚 Start Here
+
+**New to Altworth?** Choose your path based on your role:
+
+| I am a... | Start Here |
+|-----------|------------|
+| **New Developer** | [Frontend Developer Onboarding](https://github.com/altworth-markets/front-end/blob/main/docs/DEVELOPER_ONBOARDING.md) |
+| **Product Manager / Stakeholder** | [User Journeys](https://github.com/altworth-markets/.github/blob/main/profile/USER_JOURNEYS.md) |
+| **System Architect** | [System Overview](https://github.com/altworth-markets/.github/blob/main/profile/SYSTEM_OVERVIEW.md) |
+| **Backend Engineer** | [Technical Flows](https://github.com/altworth-markets/backend/blob/main/docs/TECHNICAL_FLOWS.md) |
+| **Database Administrator** | [State Machines](https://github.com/altworth-markets/backend/blob/main/docs/STATE_MACHINES.md) |
+
+### 📖 Documentation Hub
+
+**Complete documentation index**: [DOCUMENTATION_INDEX.md](https://github.com/altworth-markets/.github/blob/main/profile/DOCUMENTATION_INDEX.md)
+
+**Key Documentation**:
+- **[System Overview](https://github.com/altworth-markets/.github/blob/main/profile/SYSTEM_OVERVIEW.md)** - High-level architecture and platform vision (~30 pages)
+- **[User Journeys](https://github.com/altworth-markets/.github/blob/main/profile/USER_JOURNEYS.md)** - Persona-based scenarios with UI flows (~60 pages)
+- **[Technical Flows](https://github.com/altworth-markets/backend/blob/main/docs/TECHNICAL_FLOWS.md)** - Detailed sequence diagrams (~45 pages)
+- **[State Machines](https://github.com/altworth-markets/backend/blob/main/docs/STATE_MACHINES.md)** - Entity lifecycle state machines (~35 pages)
+- **[Developer Onboarding](https://github.com/altworth-markets/front-end/blob/main/docs/DEVELOPER_ONBOARDING.md)** - Complete setup guide (~60 pages)
+
+**Total**: 40+ documentation files, ~510 pages
+
 ## Getting Started
 
 Visit our [frontend repository](https://github.com/altworth-markets/front-end) for setup instructions and development guides.
