@@ -1,7 +1,19 @@
 # Altworth Markets - Complete Documentation Index
 
-**Last Updated**: November 7, 2025
+**Last Updated**: November 10, 2025
 **Purpose**: Central directory of all Altworth Markets documentation
+
+---
+
+## 📋 Documentation Quality
+
+> **⚠️ CODE IS THE SOURCE OF TRUTH**
+>
+> All documentation strives for accuracy, but the **actual implementation in the codebase takes precedence**.
+>
+> **Report Errors**: Found a discrepancy? [Create an issue](https://github.com/altworth-markets/.github/issues) with label `documentation-error`.
+>
+> **Latest Review**: [Documentation Accuracy Report](./DOCUMENTATION_ACCURACY_REPORT.md) - November 10, 2025
 
 ---
 
@@ -24,6 +36,20 @@
 ### **Organization-Level Documentation** (This Repository)
 
 High-level, cross-repository documentation for all team members.
+
+#### [Documentation Accuracy Report](./DOCUMENTATION_ACCURACY_REPORT.md) **NEW**
+**Purpose**: Documentation review findings and verification against code
+
+**Contents**:
+- Review findings (corrections applied November 10, 2025)
+- Code verification results
+- Known discrepancies (currently: none)
+- Feedback process for reporting errors
+- Quarterly review recommendations
+
+**Audience**: All team members (establishes documentation trust)
+
+---
 
 #### [System Overview](./SYSTEM_OVERVIEW.md) (~30 pages)
 **Purpose**: High-level system architecture and design

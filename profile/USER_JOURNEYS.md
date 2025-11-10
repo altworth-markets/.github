@@ -1,8 +1,23 @@
 # Altworth Markets - User Journeys
 
 **Version**: 1.0
-**Last Updated**: November 7, 2025
+**Last Updated**: November 10, 2025
 **Purpose**: Persona-based scenarios and step-by-step user flows
+
+---
+
+## 📋 Documentation Notice
+
+> **⚠️ CODE IS THE SOURCE OF TRUTH**
+>
+> This documentation describes intended behavior and design patterns. While we strive for accuracy, the **actual implementation in the codebase takes precedence** over this documentation.
+>
+> **If you find discrepancies:**
+> 1. Check the actual code in repositories: [frontend](https://github.com/altworth-markets/front-end), [backend](https://github.com/altworth-markets/backend)
+> 2. Report documentation errors via [GitHub Issues](https://github.com/altworth-markets/.github/issues)
+> 3. Use label: `documentation-error` and reference specific line numbers
+>
+> **Last Code Review**: November 10, 2025 (reviewed against commit `81127bc` frontend, backend main)
 
 ---
 
@@ -219,10 +234,12 @@ Frontend: <WalletModalProvider>
 **Actions**:
 1. Confirms purchase (50 USDC)
 2. Sees "Sign authentication message" in Phantom
-3. Signs message (no fee)
-4. Sees "Creating pull request..."
-5. Waits 2-3 seconds
-6. Sees "Capsule purchased! Click to reveal"
+3. Signs message (no fee - this proves wallet ownership)
+4. Sees "Approve payment transaction" in Phantom
+5. Reviews transaction: 50 USDC + 0.000005 SOL fee (~$0.0005)
+6. Approves USDC payment transaction
+7. Waits 2-3 seconds for Solana confirmation
+8. Sees "Capsule purchased! Click to reveal"
 
 **UI State**:
 ```
@@ -237,13 +254,27 @@ Step 1: Authentication
 │  [Cancel]  [Sign]              │
 └────────────────────────────────┘
 
-Step 2: Pull Request
+Step 2: Payment Transaction
 ┌────────────────────────────────┐
-│  Creating Gacha Pull...        │
-│  ⏳ Please wait                │
+│  Phantom - Approve Transaction │
+├────────────────────────────────┤
+│  Purchase Capsule              │
+│                                │
+│  Amount: 50 USDC               │
+│  Fee: 0.000005 SOL (~$0.0005)  │
+│                                │
+│  To: Altworth Markets          │
+│                                │
+│  [Reject]  [Approve]           │
 └────────────────────────────────┘
 
-Step 3: Success
+Step 3: Confirming
+┌────────────────────────────────┐
+│  Processing Payment...         │
+│  ⏳ Confirming on Solana       │
+└────────────────────────────────┘
+
+Step 4: Success
 ┌────────────────────────────────┐
 │  ✅ Capsule Purchased!         │
 │                                │
@@ -261,24 +292,43 @@ sequenceDiagram
     participant Phantom
     participant SDK
     participant Backend
+    participant Solana
 
     Sarah->>Frontend: Click "Purchase"
+
+    Note over Frontend,Backend: Step 1: Authentication
     Frontend->>SDK: requestNonce(walletAddress)
     SDK->>Backend: POST /auth/nonce
     Backend-->>SDK: { nonce }
     SDK-->>Frontend: { nonce }
-    Frontend->>Phantom: Sign message
-    Sarah->>Phantom: Approve signature
+    Frontend->>Phantom: Sign authentication message
+    Sarah->>Phantom: Approve signature (free)
     Phantom-->>Frontend: { signature }
+
+    Note over Frontend,Backend: Step 2: Payment Transaction
     Frontend->>SDK: gacha.pullRequest({ poolId, signature })
     SDK->>Backend: POST /gacha/pull/request
-    Note over Backend: 1. Verify signature<br/>2. Create pull record<br/>3. Select random pack
-    Backend-->>SDK: { pullId, vrfRequestId }
-    SDK-->>Frontend: Pull response
+    Note over Backend: 1. Verify signature<br/>2. Build USDC payment transaction<br/>3. Sign with signer-1
+    Backend-->>SDK: { unsignedTransaction }
+    SDK-->>Frontend: Payment transaction
+    Frontend->>Phantom: Request transaction approval
+    Note over Phantom: Shows: 50 USDC + 0.000005 SOL fee
+    Sarah->>Phantom: Approve payment
+    Phantom-->>Frontend: { signedTransaction }
+
+    Note over Frontend,Solana: Step 3: On-Chain Confirmation
+    Frontend->>SDK: Submit signed transaction
+    SDK->>Backend: POST /tx/purchase/finalize
+    Note over Backend: Co-sign with signer-2
+    Backend->>Solana: Submit transaction
+    Solana-->>Backend: Transaction confirmed
+    Note over Backend: Create pull record & select random pack
+    Backend-->>SDK: { pullId, txSignature }
+    SDK-->>Frontend: Purchase complete
     Frontend-->>Sarah: "Capsule purchased!"
 ```
 
-**Sarah's Thought**: "Wow, that was fast! And cheap (no gas fees)."
+**Sarah's Thought**: "Wow, that was fast! And cheap - only $0.0005 in fees for a $50 purchase!"
 
 ---
 
@@ -454,13 +504,15 @@ Metadata:
 | Metric | Value | Target |
 |--------|-------|--------|
 | **Time to Purchase** | 2 minutes | < 5 minutes |
-| **Transaction Cost** | $0.0005 SOL | < $0.01 |
-| **Clicks to Claim** | 6 clicks | < 10 clicks |
+| **Purchase Fee** | 0.000005 SOL (~$0.0005) | < $0.01 |
+| **Claim Fee** | 0.000005 SOL (~$0.0005) | < $0.01 |
+| **Total Transaction Costs** | ~$0.001 | < $0.02 |
+| **Clicks to Claim** | 8 clicks (2 signatures) | < 10 clicks |
 | **User Satisfaction** | 5/5 ⭐ | > 4/5 |
 | **Would Recommend** | Yes | > 80% yes |
 
 **Sarah's Final Thoughts**:
-> "This is so much better than eBay! Lower prices, instant transactions, and I actually own the NFT. Plus the gacha mechanic made it fun. I'm definitely buying more capsules!"
+> "This is so much better than eBay! Lower prices, instant transactions for pennies in fees, and I actually own the NFT. Plus the gacha mechanic made it fun. I'm definitely buying more capsules!"
 
 ---
 
@@ -729,11 +781,12 @@ Skyridge (Grade 9):
 | **Time to Complete Research** | 2 hours | < 4 hours |
 | **Portfolio ROI** | +340% | > 100% |
 | **Liquidity (Buyback)** | 132 USDC | Instant |
-| **Transaction Costs** | $0.0025 SOL | < $0.01 |
+| **Transaction Costs (5 purchases)** | 0.000025 SOL (~$0.0025) | < $0.01 |
+| **Total Fees (Purchase + 3 Claims)** | ~$0.004 | < $0.02 |
 | **Portfolio Integration** | DeBank ✅ | Supported |
 
 **Marcus's Final Thoughts**:
-> "Altworth nailed the RWA investment experience. Real assets, on-chain ownership, instant liquidity through buyback, and secondary market integration. This is the future of alternative investments."
+> "Altworth nailed the RWA investment experience. Real assets, on-chain ownership, instant liquidity through buyback, and secondary market integration. Ultra-low fees compared to Ethereum make this scalable. This is the future of alternative investments."
 
 ---
 
@@ -1780,9 +1833,10 @@ This document covers **4 primary user personas** and their complete journeys thr
 ### Key Takeaways
 
 **User Experience Strengths**:
-- ✅ Low transaction costs ($0.0005 vs $2-50 on Ethereum)
-- ✅ Fast finality (400ms vs 12 seconds)
-- ✅ Real asset ownership (NFTs on-chain)
+- ✅ Ultra-low transaction costs (~$0.0005 per transaction on Solana vs $2-50 on Ethereum)
+- ✅ Fast finality (400ms Solana confirmation vs 12+ seconds on Ethereum)
+- ✅ Two-step secure flow: Free authentication + USDC payment with minimal network fees
+- ✅ Real asset ownership (NFTs on-chain via Solana blockchain)
 - ✅ Instant liquidity (buyback option)
 - ✅ Engaging gamification (gacha mechanics)
 

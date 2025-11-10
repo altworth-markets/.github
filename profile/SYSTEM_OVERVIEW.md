@@ -1,8 +1,23 @@
 # Altworth Markets - System Overview
 
 **Version**: 1.0
-**Last Updated**: November 7, 2025
+**Last Updated**: November 10, 2025
 **Status**: Production Alpha
+
+---
+
+## 📋 Documentation Notice
+
+> **⚠️ CODE IS THE SOURCE OF TRUTH**
+>
+> This documentation describes intended behavior and design patterns. While we strive for accuracy, the **actual implementation in the codebase takes precedence** over this documentation.
+>
+> **If you find discrepancies:**
+> 1. Check the actual code in repositories: [frontend](https://github.com/altworth-markets/front-end), [backend](https://github.com/altworth-markets/backend), [contracts](https://github.com/altworth-markets/contracts), [SDK](https://github.com/altworth-markets/sdk)
+> 2. Report documentation errors via [GitHub Issues](https://github.com/altworth-markets/.github/issues)
+> 3. Use label: `documentation-error` and reference specific sections
+>
+> **Last Code Review**: November 10, 2025
 
 ---
 
