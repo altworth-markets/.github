@@ -1,0 +1,69 @@
+name: Sync Organization Labels
+
+on:
+  push:
+    branches: [main]
+    paths: ['labels.yml']
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Preview changes without applying'
+        type: boolean
+        default: true
+      repository:
+        description: 'Specific repo (empty = all)'
+        type: string
+        default: ''
+
+jobs:
+  sync:
+    name: Sync to ${{ matrix.repo }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        repo:
+          - altworth-markets/solana-sdk
+          - altworth-markets/front-end
+          - altworth-markets/backend
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install github-label-sync
+        run: npm install -g github-label-sync
+
+      - name: Sync labels to ${{ matrix.repo }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.LABEL_SYNC_TOKEN }}
+        run: |
+          REPO="${{ matrix.repo }}"
+          DRY_RUN="${{ inputs.dry_run }}"
+          SPECIFIC="${{ inputs.repository }}"
+
+          # Skip if targeting specific repo and this isn't it
+          if [ -n "$SPECIFIC" ] && [ "$REPO" != "$SPECIFIC" ]; then
+            echo "Skipping $REPO (not the requested repo)"
+            exit 0
+          fi
+
+          # Build flags
+          FLAGS="--allow-added-labels"
+          if [ "$DRY_RUN" = "true" ]; then
+            FLAGS="$FLAGS --dry-run"
+            echo "DRY RUN for $REPO"
+          else
+            echo "SYNCING $REPO"
+          fi
+
+          # Run sync
+          github-label-sync \
+            --access-token "$GITHUB_TOKEN" \
+            --labels labels.yml \
+            $FLAGS \
+            "$REPO"
