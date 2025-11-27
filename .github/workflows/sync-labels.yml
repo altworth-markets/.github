@@ -26,6 +26,7 @@ jobs:
           - altworth-markets/solana-sdk
           - altworth-markets/front-end
           - altworth-markets/backend
+          - altworth-markets/contracts
     steps:
       - name: Checkout
         uses: actions/checkout@v4
