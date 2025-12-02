@@ -98,32 +98,150 @@ graph TB
 
 ## 🚀 Getting Started
 
+> ⚠️ **IMPORTANT: Documentation = Code**
+>
+> Text documentation can go stale. **The `package.json` scripts in each repo are the single source of truth.**
+>
+> **To see all available commands:**
+> ```bash
+> # In any repo
+> npm run          # Shows all scripts with descriptions
+> pnpm run         # Same thing (backend uses pnpm)
+> ```
+
 ### For Developers
 
-**New to the platform?** Start with the comprehensive onboarding guide:
-
-👉 **[Developer Onboarding Guide](https://github.com/altworth-markets/front-end/blob/main/docs/DEVELOPER_ONBOARDING.md)** (30+ pages)
-
-**Quick Start:**
+**Step 1: Clone Repositories**
 
 ```bash
-# 1. Clone the repositories
 git clone https://github.com/altworth-markets/backend.git
 git clone https://github.com/altworth-markets/front-end.git
-
-# 2. Start backend (Bun required)
-cd backend
-bun install
-bun run db:up && bun run db:wait && bun run db:migrate
-bun run dev  # Port 3000
-
-# 3. Start frontend (Node.js 22 required)
-cd ../front-end
-npm install
-npm run dev  # Port 3001
-
-# 4. Visit http://localhost:3001
 ```
+
+**Step 2: Backend Setup (Choose Your Path)**
+
+<details open>
+<summary><b>🤖 Automated Setup (Recommended - 3 minutes)</b></summary>
+
+```bash
+cd backend
+
+# Interactive setup with explanations
+pnpm run quick-start
+
+# Fast mode (skip confirmations)
+pnpm run quick-start -- -y
+
+# Tutorial mode (explains everything)
+pnpm run quick-start -- --tutorial
+```
+
+**What it does:**
+- ✅ Checks prerequisites (Node.js, Docker)
+- ✅ Installs dependencies
+- ✅ Creates `.env` file
+- ✅ Starts PostgreSQL in Docker
+- ✅ Runs migrations
+- ✅ Seeds 40 sample NFTs and capsules
+- ✅ Gives you next steps
+
+</details>
+
+<details>
+<summary><b>🛠️ Manual Setup (For Control)</b></summary>
+
+```bash
+cd backend
+
+# 1. Install dependencies
+pnpm install
+
+# 2. Set up environment
+cp .env.example .env
+# Edit .env with your configuration
+
+# 3. Start database
+pnpm db:up && pnpm db:wait
+
+# 4. Run migrations
+pnpm db:migrate
+
+# 5. Seed data (optional)
+pnpm db:seed:devnet
+
+# 6. Start server
+pnpm dev  # Port 3000
+```
+
+</details>
+
+<details>
+<summary><b>❓ Troubleshooting Setup Issues</b></summary>
+
+```bash
+# See ALL available commands and their descriptions
+pnpm run
+
+# Common helpful commands:
+pnpm run dev:setup     # Alternative setup script
+pnpm run db:down       # Reset database
+pnpm run db:up         # Start database
+```
+
+If you encounter issues, the script names in `package.json` are **always correct** - text docs may lag behind.
+
+</details>
+
+**Step 3: Frontend Setup**
+
+```bash
+cd ../front-end
+
+# See all available commands
+npm run
+
+# Quick start (automated, like backend)
+npm run quick-start
+
+# Or manual setup
+npm install
+cp .env.example .env.local
+# Edit .env.local
+npm run dev  # Port 3001
+```
+
+**Step 4: Visit**
+
+🌐 **http://localhost:3001**
+
+---
+
+### 💡 Philosophy: Code as Documentation
+
+We've shifted to **executable documentation** that can't go stale:
+
+| Old Way (❌ Goes Stale) | New Way (✅ Always Correct) |
+|-------------------------|------------------------------|
+| README with manual steps | `pnpm run quick-start` |
+| "Run command X with flags Y and Z" | `pnpm run` shows all commands |
+| Copy-paste commands that break | Scripts that validate prerequisites |
+| Text that becomes outdated | package.json as single source of truth |
+
+**When in doubt:**
+```bash
+pnpm run        # Backend commands
+npm run         # Frontend commands
+```
+
+These **never lie** - they show exactly what works right now.
+
+---
+
+### 📚 Additional Resources
+
+**For comprehensive guides (when you need context, not commands):**
+
+👉 **[Developer Onboarding Guide](https://github.com/altworth-markets/front-end/blob/main/docs/DEVELOPER_ONBOARDING.md)** (30+ pages of architecture, not commands)
 
 ### For Different Roles
 
