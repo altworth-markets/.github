@@ -111,6 +111,8 @@ graph TB
 
 ### For Developers
 
+> 👉 **New to the platform?** See the [Complete Setup Guide](./SETUP.md) for detailed instructions.
+
 **Step 1: Clone Repositories**
 
 ```bash
