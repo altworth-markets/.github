@@ -1,0 +1,228 @@
+name: 📖 Validate Documentation
+
+on:
+  pull_request:
+    paths:
+      - '**.md'
+      - '**/package.json'
+      - '.github/workflows/validate-docs.yml'
+
+  workflow_dispatch:
+
+  schedule:
+    # Run weekly on Mondays at 9am UTC
+    - cron: '0 9 * * 1'
+
+jobs:
+  check-stale-references:
+    name: Check for Stale Tech References
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check for bun references
+        run: |
+          echo "🔍 Checking for stale 'bun' references..."
+
+          if grep -r "bun install\|bun run\|bun test" \
+            --include="*.md" \
+            --exclude-dir=node_modules \
+            --exclude-dir=.git \
+            . 2>/dev/null; then
+            echo "❌ Found stale 'bun' references in documentation"
+            echo ""
+            echo "This project uses pnpm, not bun. Please update:"
+            echo "  - 'bun install' → 'pnpm install'"
+            echo "  - 'bun run' → 'pnpm run'"
+            echo "  - 'bun test' → 'pnpm test'"
+            exit 1
+          fi
+
+          echo "✅ No stale 'bun' references found"
+
+      - name: Check for npm/yarn references (should be pnpm)
+        run: |
+          echo "🔍 Checking for npm/yarn references (backend should use pnpm)..."
+
+          # Check backend docs specifically
+          if grep -r "npm install\|yarn install" \
+            backend/docs/ backend/README.md backend/CLAUDE.md \
+            2>/dev/null; then
+            echo "⚠️ Found 'npm install' or 'yarn install' in backend docs"
+            echo "Backend uses pnpm. Consider updating to 'pnpm install'"
+            echo "(This is a warning, not a failure)"
+          fi
+
+          echo "✅ Check complete"
+
+  verify-commands-exist:
+    name: Verify pnpm Scripts Exist
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        repo: [backend, gacha-sdk]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Extract pnpm run commands from docs
+        id: extract
+        working-directory: ${{ matrix.repo }}
+        run: |
+          echo "🔍 Extracting 'pnpm run' commands from ${{ matrix.repo }} docs..."
+
+          # Extract all "pnpm run <script>" patterns from markdown
+          scripts=$(grep -rho "pnpm run [a-z:-]\+" \
+            --include="*.md" \
+            --exclude-dir=node_modules \
+            . 2>/dev/null | \
+            sed 's/pnpm run //' | \
+            sort -u || echo "")
+
+          if [ -z "$scripts" ]; then
+            echo "No 'pnpm run' commands found in docs"
+            exit 0
+          fi
+
+          echo "Found commands: $scripts"
+          echo "scripts=$scripts" >> $GITHUB_OUTPUT
+
+      - name: Verify scripts exist in package.json
+        if: steps.extract.outputs.scripts != ''
+        working-directory: ${{ matrix.repo }}
+        run: |
+          echo "🔍 Verifying scripts exist in package.json..."
+
+          scripts="${{ steps.extract.outputs.scripts }}"
+          missing=()
+
+          for script in $scripts; do
+            if ! grep -q "\"$script\":" package.json; then
+              missing+=("$script")
+              echo "❌ Script not found: pnpm run $script"
+            else
+              echo "✅ Found: pnpm run $script"
+            fi
+          done
+
+          if [ ${#missing[@]} -gt 0 ]; then
+            echo ""
+            echo "❌ Missing scripts in ${{ matrix.repo }}/package.json:"
+            printf '  - %s\n' "${missing[@]}"
+            echo ""
+            echo "Either:"
+            echo "  1. Add the script to package.json, OR"
+            echo "  2. Remove the reference from documentation"
+            exit 1
+          fi
+
+          echo "✅ All documented scripts exist in package.json"
+
+  check-broken-links:
+    name: Check for Broken Internal Links
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check internal markdown links
+        run: |
+          echo "🔍 Checking for broken internal links..."
+
+          broken=()
+
+          # Find all markdown files
+          while IFS= read -r file; do
+            # Extract relative links like [text](./path/to/file.md)
+            links=$(grep -oP '\[([^\]]+)\]\(\./[^\)]+\)' "$file" 2>/dev/null | \
+                    grep -oP '\(\./\K[^\)]+' || echo "")
+
+            for link in $links; do
+              # Resolve relative path
+              dir=$(dirname "$file")
+              target="$dir/$link"
+
+              # Check if file exists
+              if [ ! -f "$target" ]; then
+                broken+=("$file → $target")
+                echo "❌ Broken link: $file → $target"
+              fi
+            done
+          done < <(find . -name "*.md" -not -path "./node_modules/*" -not -path "./.git/*")
+
+          if [ ${#broken[@]} -gt 0 ]; then
+            echo ""
+            echo "❌ Found ${#broken[@]} broken internal links"
+            exit 1
+          fi
+
+          echo "✅ No broken internal links found"
+
+  check-code-as-documentation:
+    name: Verify Code-as-Documentation Principle
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check for hardcoded commands in READMEs
+        run: |
+          echo "🔍 Checking for violations of code-as-documentation principle..."
+
+          # Look for READMEs that list many commands without referring to package.json
+          violations=()
+
+          for readme in backend/README.md front-end/README.md gacha-sdk/README.md; do
+            if [ ! -f "$readme" ]; then
+              continue
+            fi
+
+            # Count command listings
+            cmd_count=$(grep -c "^pnpm " "$readme" 2>/dev/null || echo 0)
+
+            # Check if README mentions "pnpm run" as source of truth
+            has_reference=$(grep -c "pnpm run.*# See all" "$readme" 2>/dev/null || echo 0)
+
+            if [ "$cmd_count" -gt 15 ] && [ "$has_reference" -eq 0 ]; then
+              violations+=("$readme has $cmd_count commands but no reference to 'pnpm run'")
+              echo "⚠️ $readme lists many commands without referring to package.json"
+            fi
+          done
+
+          if [ ${#violations[@]} -gt 0 ]; then
+            echo ""
+            echo "⚠️ Potential violations of code-as-documentation principle:"
+            printf '  - %s\n' "${violations[@]}"
+            echo ""
+            echo "Consider adding a section like:"
+            echo '  ```bash'
+            echo '  # See all available commands:'
+            echo '  pnpm run'
+            echo '  ```'
+            echo ""
+            echo "(This is a warning, not a failure)"
+          else
+            echo "✅ Documentation follows code-as-documentation principle"
+          fi
+
+  summary:
+    name: Summary
+    runs-on: ubuntu-latest
+    needs: [check-stale-references, verify-commands-exist, check-broken-links, check-code-as-documentation]
+    if: always()
+    steps:
+      - name: Check results
+        run: |
+          echo "📊 Documentation Validation Summary"
+          echo ""
+          echo "Stale references: ${{ needs.check-stale-references.result }}"
+          echo "Command validation: ${{ needs.verify-commands-exist.result }}"
+          echo "Broken links: ${{ needs.check-broken-links.result }}"
+          echo "Code-as-docs: ${{ needs.check-code-as-documentation.result }}"
+          echo ""
+
+          if [ "${{ needs.check-stale-references.result }}" != "success" ] || \
+             [ "${{ needs.verify-commands-exist.result }}" != "success" ] || \
+             [ "${{ needs.check-broken-links.result }}" != "success" ]; then
+            echo "❌ Documentation validation failed"
+            exit 1
+          fi
+
+          echo "✅ All documentation checks passed"
