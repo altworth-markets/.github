@@ -6,13 +6,19 @@
 
 ## 🚀 Quick Start
 
-```bash
-# 1. Clone the monorepo (if you haven't already)
-git clone https://github.com/altworth-markets/altworth-markets.git
-cd altworth-markets
+The Altworth Markets platform is split across multiple repositories. Clone the ones you need:
 
-# 2. Choose what you're working on (see table below)
+```bash
+# Clone the repositories you'll be working on
+git clone https://github.com/altworth-markets/backend.git
+git clone https://github.com/altworth-markets/front-end.git
+
+# Optional: Clone if working on contracts or SDK
+git clone https://github.com/altworth-markets/contracts.git
+git clone https://github.com/altworth-markets/gacha-sdk.git
 ```
+
+**👉 Then choose what you're working on (see table below)**
 
 ---
 
@@ -20,10 +26,10 @@ cd altworth-markets
 
 | Component | Description | Setup Guide | Time |
 |-----------|-------------|-------------|------|
-| **Backend API** | Node.js API server (Hono + PostgreSQL) | [backend/README.md](./backend/README.md#-quick-start) | 3-5 min |
-| **Frontend UI** | React + Next.js web application | [front-end/README.md](./front-end/README.md#-quick-start) | 3 min |
-| **Solana Contracts** | On-chain programs (Anchor framework) | [contracts/README.md](./contracts/README.md#-quick-start) | 5 min |
-| **SDK Packages** | TypeScript SDK for Solana integration | [gacha-sdk/README.md](./gacha-sdk/README.md#-quick-start) | 2 min |
+| **Backend API** | Node.js API server (Hono + PostgreSQL) | [backend/README.md](https://github.com/altworth-markets/backend#-quick-start) | 3-5 min |
+| **Frontend UI** | React + Next.js web application | [front-end/README.md](https://github.com/altworth-markets/front-end#-quick-start) | 3 min |
+| **Solana Contracts** | On-chain programs (Anchor framework) | [contracts/README.md](https://github.com/altworth-markets/contracts#-quick-start) | 5 min |
+| **SDK Packages** | TypeScript SDK for Solana integration | [gacha-sdk/README.md](https://github.com/altworth-markets/gacha-sdk#-quick-start) | 2 min |
 
 **👉 Click the setup guide link for your component to get started.**
 
@@ -100,7 +106,7 @@ docker --version # Should be 20+
 
 ## 🔧 Package Manager
 
-This monorepo uses **pnpm** (not npm, not yarn, not bun).
+The backend and SDK use **pnpm** (not npm, not yarn, not bun). The frontend uses **npm**.
 
 ### Install pnpm
 
@@ -131,18 +137,21 @@ pnpm test
 
 ---
 
-## 🗂️ Monorepo Structure
+## 🗂️ Repository Structure
+
+The platform is organized across multiple repositories:
 
 ```
-altworth-markets/
+altworth-markets/ (GitHub Organization)
 ├── backend/          # Node.js API server (Hono + PostgreSQL + Redis)
 ├── front-end/        # React + Next.js web application
 ├── contracts/        # Solana programs (Anchor framework)
-├── gacha-sdk/        # TypeScript SDK packages (monorepo within monorepo)
+├── gacha-sdk/        # TypeScript SDK packages (workspace monorepo)
 ├── landing/          # Marketing landing page
-├── .github/          # Organization-level docs and workflows
-└── SETUP.md          # This file
+└── .github/          # Organization-level docs and workflows
 ```
+
+Each repository is cloned separately (see [Quick Start](#-quick-start) above).
 
 ---
 

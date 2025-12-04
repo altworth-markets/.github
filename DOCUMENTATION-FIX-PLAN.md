@@ -401,9 +401,10 @@ fi
 ## Quick Start
 
 ```bash
-# 1. Clone all repositories (this is a monorepo structure)
-git clone https://github.com/altworth-markets/altworth-markets.git
-cd altworth-markets
+# 1. Clone the repositories you need
+git clone https://github.com/altworth-markets/backend.git
+git clone https://github.com/altworth-markets/front-end.git
+# Optional: contracts, gacha-sdk
 
 # 2. Choose what you're working on:
 ```
