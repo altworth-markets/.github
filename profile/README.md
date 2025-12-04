@@ -243,7 +243,7 @@ These **never lie** - they show exactly what works right now.
 
 **For comprehensive guides (when you need context, not commands):**
 
-👉 **[Developer Onboarding Guide](https://github.com/altworth-markets/front-end/blob/main/docs/DEVELOPER_ONBOARDING.md)** (30+ pages of architecture, not commands)
+👉 **[Developer Onboarding Checklist](https://github.com/altworth-markets/front-end/blob/main/docs/DEVELOPER_ONBOARDING_CHECKLIST.md)** - Setup checklist for new developers
 
 ### For Different Roles
 
@@ -268,9 +268,9 @@ Start with these comprehensive documents to understand the platform:
 |----------|-------|---------|----------|
 | [**SYSTEM_OVERVIEW**](./SYSTEM_OVERVIEW.md) | 30 | High-level architecture and platform vision | All Developers, Architects |
 | [**USER_JOURNEYS**](./USER_JOURNEYS.md) | 60+ | Persona-based user scenarios with UI flows | Product, UX, QA, Backend |
-| [**TECHNICAL_FLOWS**](https://github.com/altworth-markets/front-end/docs/TECHNICAL_FLOWS.md) | 45 | Detailed sequence diagrams | Backend, Frontend, Blockchain |
-| [**STATE_MACHINES**](https://github.com/altworth-markets/front-end/docs/STATE_MACHINES.md) | 30 | Entity lifecycle state machines | Backend, Database Admins |
-| [**DEVELOPER_ONBOARDING**](https://github.com/altworth-markets/front-end/docs/DEVELOPER_ONBOARDING.md) | 30+ | Complete setup guide for new developers | New Team Members |
+| [**DEVELOPER_ONBOARDING_CHECKLIST**](https://github.com/altworth-markets/front-end/blob/main/docs/DEVELOPER_ONBOARDING_CHECKLIST.md) | 5 | Setup checklist for new developers | New Team Members |
+| [**BACKEND_MANAGEMENT**](https://github.com/altworth-markets/front-end/blob/main/docs/BACKEND_MANAGEMENT.md) | - | Backend management guide | Developers |
+| [**QUICK_START**](https://github.com/altworth-markets/front-end/blob/main/docs/QUICK_START.md) | - | Quick start guide | New Developers |
 
 ### 📖 **Complete Documentation Index**
 
@@ -453,7 +453,7 @@ All repositories follow a consistent workflow for cross-repo changes:
 
 This is a private organization. Team members should:
 
-1. **Read the docs** - Start with [Developer Onboarding](https://github.com/altworth-markets/front-end/blob/main/docs/DEVELOPER_ONBOARDING.md)
+1. **Read the docs** - Start with [Setup Guide](https://github.com/altworth-markets/.github/blob/main/profile/SETUP.md)
 2. **Choose a repository** - See [Repositories](#repositories) section
 3. **Follow the workflow** - Each repo has contributing guidelines
 4. **Create PRs** - All changes require code review
@@ -531,9 +531,10 @@ gh pr create
 | Question Type | Resource |
 |---------------|----------|
 | **Platform Overview** | [System Overview](./SYSTEM_OVERVIEW.md) |
-| **Development Setup** | [Developer Onboarding](https://github.com/altworth-markets/front-end/docs/DEVELOPER_ONBOARDING.md) |
+| **Development Setup** | [Setup Guide](./SETUP.md) |
 | **User Flows** | [User Journeys](./USER_JOURNEYS.md) |
-| **Technical Details** | [Technical Flows](https://github.com/altworth-markets/front-end/docs/TECHNICAL_FLOWS.md) |
+| **Frontend Docs** | [Frontend Documentation](https://github.com/altworth-markets/front-end/tree/main/docs) |
+| **Backend Docs** | [Backend Documentation](https://github.com/altworth-markets/backend/tree/main/docs) |
 | **All Documentation** | [Documentation Index](./DOCUMENTATION_INDEX.md) |
 
 ### Quick Links

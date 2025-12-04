@@ -174,7 +174,8 @@ Not sure which setup path to take?
 
 ### New Developer?
 
-- 📖 **[Developer Onboarding](https://github.com/altworth-markets/front-end/blob/main/docs/DEVELOPER_ONBOARDING.md)** - Comprehensive guide for new team members
+- 📖 **[Developer Onboarding Checklist](https://github.com/altworth-markets/front-end/blob/main/docs/DEVELOPER_ONBOARDING_CHECKLIST.md)** - Setup checklist for new team members
+- 🚀 **[Quick Start Guide](https://github.com/altworth-markets/front-end/blob/main/docs/QUICK_START.md)** - Get up and running quickly
 
 ### Understanding the Architecture?
 
