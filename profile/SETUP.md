@@ -159,12 +159,12 @@ Each repository is cloned separately (see [Quick Start](#-quick-start) above).
 
 Not sure which setup path to take?
 
-- **Backend setup**: [SETUP_DECISION_TREE.md](./backend/docs/guides/SETUP_DECISION_TREE.md)
+- **Backend setup**: [SETUP_DECISION_TREE.md](https://github.com/altworth-markets/backend/blob/main/docs/guides/SETUP_DECISION_TREE.md)
   - Doppler vs .env
   - Automated vs manual setup
   - Troubleshooting common issues
 
-- **Frontend setup**: See [front-end/README.md](./front-end/README.md#backend-connection)
+- **Frontend setup**: See [front-end/README.md](https://github.com/altworth-markets/front-end#backend-connection)
   - Local vs hosted backend
   - Environment variables
 
@@ -174,19 +174,18 @@ Not sure which setup path to take?
 
 ### New Developer?
 
-- 📖 **[Developer Onboarding](./front-end/docs/DEVELOPER_ONBOARDING.md)** - Comprehensive guide for new team members
+- 📖 **[Developer Onboarding](https://github.com/altworth-markets/front-end/blob/main/docs/DEVELOPER_ONBOARDING.md)** - Comprehensive guide for new team members
 
 ### Understanding the Architecture?
 
-- 🏗️ **[System Architecture](./backend/docs/architecture/SYSTEM_ARCHITECTURE.md)** - How everything fits together
-- 🗄️ **[Database Schema](./backend/docs/architecture/DATABASE_SCHEMA.md)** - PostgreSQL tables and relationships
-- 🔗 **[Cross-Repo Coordination](./.github/profile/CROSS_REPO_COORDINATION.md)** - How repos work together
+- 🔧 **[Backend Documentation](https://github.com/altworth-markets/backend/tree/main/docs)** - Architecture, operations, and technical guides
+- 🔗 **[Cross-Repo Coordination](https://github.com/altworth-markets/.github/blob/main/profile/CROSS_REPO_COORDINATION.md)** - How repos work together
 
 ### Working with Specific Technologies?
 
-- **Solana/Web3**: [contracts/README.md](./contracts/README.md) + [gacha-sdk/README.md](./gacha-sdk/README.md)
-- **Backend API**: [backend/docs/architecture/](./backend/docs/architecture/)
-- **Frontend**: [front-end/docs/](./front-end/docs/)
+- **Solana/Web3**: [Contracts README](https://github.com/altworth-markets/contracts) + [SDK README](https://github.com/altworth-markets/gacha-sdk)
+- **Backend API**: [Architecture docs](https://github.com/altworth-markets/backend/tree/main/docs/architecture)
+- **Frontend**: [Frontend docs](https://github.com/altworth-markets/front-end/tree/main/docs)
 
 ---
 
@@ -241,9 +240,9 @@ pnpm db:up && pnpm db:wait
 
 ### Still Stuck?
 
-- **Backend issues**: [backend troubleshooting guide](./backend/docs/operations/TROUBLESHOOTING.md)
-- **Frontend issues**: [frontend README](./front-end/README.md#troubleshooting)
-- **SDK issues**: [SDK troubleshooting](./gacha-sdk/README.md#-troubleshooting)
+- **Backend issues**: [Backend troubleshooting docs](https://github.com/altworth-markets/backend/tree/main/docs/troubleshooting)
+- **Frontend issues**: [Frontend README](https://github.com/altworth-markets/front-end#troubleshooting)
+- **SDK issues**: [SDK troubleshooting](https://github.com/altworth-markets/gacha-sdk#-troubleshooting)
 
 ---
 
@@ -258,7 +257,7 @@ pnpm run        # Backend, SDK
 npm run         # Frontend
 ```
 
-Read more: [Code as Documentation Philosophy](./.github/CODE-AS-DOCUMENTATION.md)
+Read more: [Code as Documentation Philosophy](https://github.com/altworth-markets/.github/blob/main/CODE-AS-DOCUMENTATION.md)
 
 ---
 
@@ -273,7 +272,7 @@ Read more: [Code as Documentation Philosophy](./.github/CODE-AS-DOCUMENTATION.md
    pnpm test            # Tests
    pnpm run build       # Build validation
    ```
-3. **Follow commit conventions**: See [git workflow](./.github/profile/GIT_WORKFLOW.md)
+3. **Follow commit conventions**: See [Git workflow](https://github.com/altworth-markets/.github/blob/main/profile/GIT_WORKFLOW.md)
 
 ---
 
@@ -287,4 +286,4 @@ Read more: [Code as Documentation Philosophy](./.github/CODE-AS-DOCUMENTATION.md
 
 **Last Updated**: 2025-12-03
 **Maintained By**: Engineering Team
-**Related**: [CODE-AS-DOCUMENTATION.md](./.github/CODE-AS-DOCUMENTATION.md), [DOCUMENTATION-FIX-PLAN.md](./.github/DOCUMENTATION-FIX-PLAN.md)
+**Related**: [CODE-AS-DOCUMENTATION.md](https://github.com/altworth-markets/.github/blob/main/CODE-AS-DOCUMENTATION.md), [DOCUMENTATION-FIX-PLAN.md](https://github.com/altworth-markets/.github/blob/main/DOCUMENTATION-FIX-PLAN.md)
