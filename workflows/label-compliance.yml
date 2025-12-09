@@ -1,0 +1,142 @@
+# Label Compliance Check
+# ======================
+# Warns when non-standard labels are added to PRs or Issues.
+# Does NOT block - just educates contributors about valid labels.
+#
+# This workflow is inherited by all repos in the org.
+#
+# Standard labels (14 total):
+#   Auto-applied: feature, bug, docs, refactor, performance, test, chore, ci
+#   Bot-applied:  dependencies
+#   Manual:       breaking-change, security, cross-repo
+#   GitHub:       good first issue, help wanted
+#
+# Source of truth: https://github.com/altworth-markets/.github/blob/main/labels.yml
+
+name: Label Compliance
+
+on:
+  pull_request:
+    types: [labeled]
+  issues:
+    types: [labeled]
+
+jobs:
+  check-labels:
+    name: Check Labels
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+
+    steps:
+      - name: Check for non-standard labels
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // Standard labels - keep in sync with labels.yml
+            const VALID_LABELS = new Set([
+              'feature',
+              'bug',
+              'docs',
+              'refactor',
+              'performance',
+              'test',
+              'chore',
+              'ci',
+              'dependencies',
+              'breaking-change',
+              'security',
+              'cross-repo',
+              'good first issue',
+              'help wanted'
+            ]);
+
+            // Get the label that was just added
+            const addedLabel = context.payload.label?.name;
+
+            if (!addedLabel) {
+              console.log('No label found in event payload');
+              return;
+            }
+
+            console.log(`Label added: "${addedLabel}"`);
+
+            // Check if it's valid
+            if (VALID_LABELS.has(addedLabel)) {
+              console.log('✅ Label is valid');
+              return;
+            }
+
+            // Non-standard label detected - post a warning comment
+            console.log('⚠️ Non-standard label detected');
+
+            const isPR = !!context.payload.pull_request;
+            const itemType = isPR ? 'PR' : 'issue';
+            const itemNumber = isPR
+              ? context.payload.pull_request.number
+              : context.payload.issue.number;
+
+            const body = `⚠️ **Non-standard label detected:** \`${addedLabel}\`
+
+This label is not in our [standard label set](https://github.com/altworth-markets/.github/blob/main/labels.yml).
+
+<details>
+<summary>Valid labels (click to expand)</summary>
+
+**Auto-applied from conventional commits:**
+- \`feature\` ← \`feat:\` commits
+- \`bug\` ← \`fix:\` commits
+- \`docs\` ← \`docs:\` commits
+- \`refactor\` ← \`refactor:\` commits
+- \`performance\` ← \`perf:\` commits
+- \`test\` ← \`test:\` commits
+- \`chore\` ← \`chore:\` commits
+- \`ci\` ← \`ci:\` commits
+
+**Applied by bots:**
+- \`dependencies\` ← Renovate/Dependabot
+
+**Manual (high-signal):**
+- \`breaking-change\` ← Breaking API changes
+- \`security\` ← Security issues
+- \`cross-repo\` ← Multi-repo work
+
+**GitHub special:**
+- \`good first issue\` ← Newcomer-friendly
+- \`help wanted\` ← Needs contributors
+
+</details>
+
+**Note:** Priority, status, and size are managed in [GitHub Projects](https://github.com/orgs/altworth-markets/projects), not labels.
+
+---
+<sub>🤖 This is an automated check. The label was not removed - please update it manually if needed.</sub>`;
+
+            // Check if we already commented about this label (avoid spam)
+            const comments = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: itemNumber,
+              per_page: 100
+            });
+
+            const alreadyWarned = comments.data.some(c => 
+              c.user?.login === 'github-actions[bot]' &&
+              c.body?.includes(`Non-standard label detected:** \`${addedLabel}\``)
+            );
+
+            if (alreadyWarned) {
+              console.log('Already warned about this label, skipping');
+              return;
+            }
+
+            // Post the warning
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: itemNumber,
+              body: body
+            });
+
+            console.log(`Posted warning comment on ${itemType} #${itemNumber}`);
