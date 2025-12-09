@@ -23,7 +23,7 @@ jobs:
       fail-fast: false
       matrix:
         repo:
-          - altworth-markets/solana-sdk
+          - altworth-markets/gacha-sdk
           - altworth-markets/front-end
           - altworth-markets/backend
           - altworth-markets/contracts
