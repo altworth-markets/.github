@@ -7,6 +7,10 @@
 #   2. Push to main branch
 #   3. Workflow auto-syncs to all repos
 #   4. Manual sync: Actions > Sync Organization Labels > Run workflow
+#
+# NOTE: Priority, Status, and Size are managed via GitHub Projects custom fields,
+# NOT labels. This avoids duplication between labels and project board metadata.
+# See: https://github.com/orgs/altworth-markets/projects/5/settings/fields
 
 # ===================
 # Type Labels
@@ -45,62 +49,6 @@
   color: "5319e7"
   description: "Performance improvement"
   aliases: ["performance", "perf"]
-
-# ===================
-# Priority Labels
-# ===================
-- name: "priority: critical"
-  color: "b60205"
-  description: "Must be addressed immediately - blocks release"
-  aliases: ["critical", "P0"]
-
-- name: "priority: high"
-  color: "d93f0b"
-  description: "Should be addressed soon - current sprint"
-  aliases: ["high", "P1"]
-
-- name: "priority: medium"
-  color: "fbca04"
-  description: "Normal priority - next sprint"
-  aliases: ["medium", "P2"]
-
-- name: "priority: low"
-  color: "0e8a16"
-  description: "Nice to have - backlog"
-  aliases: ["low", "P3"]
-
-- name: "priority: backlog"
-  color: "c5def5"
-  description: "Long-term - may not be addressed"
-  aliases: ["backlog", "P4"]
-
-# ===================
-# Status Labels
-# ===================
-- name: "status: blocked"
-  color: "d73a4a"
-  description: "Blocked by external dependency"
-  aliases: ["blocked"]
-
-- name: "status: needs-review"
-  color: "fbca04"
-  description: "Awaiting code review"
-  aliases: ["needs review", "review needed"]
-
-- name: "status: needs-info"
-  color: "d876e3"
-  description: "Waiting for more information from reporter"
-  aliases: ["needs more info", "waiting for info"]
-
-- name: "status: in-progress"
-  color: "0e8a16"
-  description: "Actively being worked on"
-  aliases: ["in progress", "wip"]
-
-- name: "status: ready"
-  color: "0e8a16"
-  description: "Ready to be picked up"
-  aliases: ["ready"]
 
 # ===================
 # Package Labels (SDK monorepo specific)
@@ -157,29 +105,6 @@
   color: "bfdadc"
   description: "Developer experience"
   aliases: ["dx", "developer experience"]
-
-# ===================
-# Size Labels
-# ===================
-- name: "size: XS"
-  color: "009900"
-  description: "< 10 lines, trivial change"
-
-- name: "size: S"
-  color: "77bb00"
-  description: "10-50 lines, small change"
-
-- name: "size: M"
-  color: "eebb00"
-  description: "50-200 lines, moderate change"
-
-- name: "size: L"
-  color: "ee9900"
-  description: "200-500 lines, large change"
-
-- name: "size: XL"
-  color: "ee5500"
-  description: "500+ lines, very large change"
 
 # ===================
 # Meta Labels
