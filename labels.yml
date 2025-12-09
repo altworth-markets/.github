@@ -1,156 +1,103 @@
-# Organization-wide label configuration
-# Synced to all repos via github-label-sync
-# Source of truth: altworth-markets/.github/labels.yml
+# Altworth Markets - Organization Labels
+# =======================================
+# Synced to all repos via .github/workflows/sync-labels.yml
 #
-# Usage:
-#   1. Edit this file to add/modify/remove labels
-#   2. Push to main branch
-#   3. Workflow auto-syncs to all repos
-#   4. Manual sync: Actions > Sync Organization Labels > Run workflow
+# PHILOSOPHY:
+#   - Labels categorize, Projects manage workflow
+#   - Fewer labels = faster decisions
+#   - Auto-apply when possible (conventional commits)
+#   - Every label must have a clear purpose
 #
-# NOTE: Priority, Status, and Size are managed via GitHub Projects custom fields,
-# NOT labels. This avoids duplication between labels and project board metadata.
-# See: https://github.com/orgs/altworth-markets/projects/5/settings/fields
+# WORKFLOW:
+#   1. Use conventional commits (feat:, fix:, docs:, etc.)
+#   2. Release-drafter auto-applies matching labels
+#   3. Labels drive changelog generation
+#   4. Priority/Status/Size managed in GitHub Projects
+#
+# Total: 13 labels (down from 50+)
 
-# ===================
-# Type Labels
-# ===================
-- name: "type: bug"
-  color: "d73a4a"
-  description: "Something isn't working"
-  aliases: ["bug"]
+# ============================================
+# AUTO-APPLIED: Conventional Commits → Labels
+# ============================================
+# These are applied automatically by release-drafter
+# based on PR title prefixes (feat:, fix:, etc.)
 
-- name: "type: feature"
+- name: feature
   color: "a2eeef"
-  description: "New feature or enhancement request"
-  aliases: ["enhancement", "feature"]
+  description: "New feature (auto-applied from feat: commits)"
+  aliases: ["enhancement", "feat"]
 
-- name: "type: docs"
+- name: bug
+  color: "d73a4a"
+  description: "Bug fix (auto-applied from fix: commits)"
+  aliases: ["fix", "bugfix"]
+
+- name: docs
   color: "0075ca"
-  description: "Documentation improvements"
+  description: "Documentation (auto-applied from docs: commits)"
   aliases: ["documentation"]
 
-- name: "type: refactor"
+- name: refactor
   color: "fbca04"
-  description: "Code refactoring without behavior change"
-  aliases: ["refactor"]
+  description: "Code refactoring (auto-applied from refactor: commits)"
+  aliases: ["refactoring"]
 
-- name: "type: chore"
-  color: "fef2c0"
-  description: "Maintenance, dependencies, tooling"
-  aliases: ["chore", "maintenance"]
-
-- name: "type: security"
-  color: "b60205"
-  description: "Security vulnerability or improvement"
-  aliases: ["security"]
-
-- name: "type: performance"
+- name: performance
   color: "5319e7"
-  description: "Performance improvement"
-  aliases: ["performance", "perf"]
+  description: "Performance improvement (auto-applied from perf: commits)"
+  aliases: ["perf"]
 
-# ===================
-# Package Labels (SDK monorepo specific)
-# ===================
-- name: "pkg: core"
-  color: "1d76db"
-  description: "@altworth-markets/solana-sdk-core"
-  aliases: ["sdk-core", "pkg:core"]
+- name: test
+  color: "bfd4f2"
+  description: "Testing changes (auto-applied from test: commits)"
+  aliases: ["testing"]
 
-- name: "pkg: react"
-  color: "61dafb"
-  description: "@altworth-markets/solana-sdk-react"
-  aliases: ["sdk-react", "pkg:react"]
+- name: chore
+  color: "fef2c0"
+  description: "Maintenance tasks (auto-applied from chore: commits)"
+  aliases: ["maintenance"]
 
-- name: "pkg: types"
-  color: "3178c6"
-  description: "@altworth-markets/solana-sdk-types"
-  aliases: ["sdk-types", "pkg:types"]
+- name: ci
+  color: "0e8a16"
+  description: "CI/CD changes (auto-applied from ci: commits)"
+  aliases: ["ci/cd", "github-actions"]
 
-- name: "pkg: utils"
-  color: "9945ff"
-  description: "@altworth-markets/solana-sdk-utils"
-  aliases: ["sdk-utils", "pkg:utils"]
+# ============================================
+# AUTO-APPLIED: By Bots
+# ============================================
 
-- name: "pkg: logger"
-  color: "006b75"
-  description: "@altworth-markets/solana-sdk-logger"
-  aliases: ["sdk-logger", "pkg:logger"]
+- name: dependencies
+  color: "0366d6"
+  description: "Dependency updates (auto-applied by Renovate/Dependabot)"
+  aliases: ["deps"]
 
-# ===================
-# Area Labels
-# ===================
-- name: "area: web3"
-  color: "bfdadc"
-  description: "Blockchain/Solana functionality"
-  aliases: ["web3", "blockchain", "solana"]
+# ============================================
+# MANUAL: High-Signal Labels
+# ============================================
+# Only apply these manually when they add real value
 
-- name: "area: auth"
-  color: "bfdadc"
-  description: "Authentication and authorization"
-  aliases: ["auth", "authentication"]
+- name: breaking-change
+  color: "b60205"
+  description: "Breaking API change - triggers major version bump"
+  aliases: ["breaking", "major"]
 
-- name: "area: api"
-  color: "bfdadc"
-  description: "API client and endpoints"
-  aliases: ["api"]
+- name: security
+  color: "d93f0b"
+  description: "Security vulnerability or improvement"
 
-- name: "area: ci-cd"
-  color: "bfdadc"
-  description: "CI/CD and automation"
-  aliases: ["ci/cd", "ci", "cd"]
-
-- name: "area: dx"
-  color: "bfdadc"
-  description: "Developer experience"
-  aliases: ["dx", "developer experience"]
-
-# ===================
-# Meta Labels
-# ===================
-- name: "epic"
-  color: "3e4b9e"
-  description: "Parent issue tracking large initiative"
-
-- name: "cross-repo"
+- name: cross-repo
   color: "ff8c00"
   description: "Spans multiple repositories"
 
-- name: "breaking-change"
-  color: "b60205"
-  description: "Introduces breaking API changes"
+# ============================================
+# GITHUB SPECIAL: Discoverable Labels
+# ============================================
+# GitHub surfaces these in the "Contribute" tab
 
-- name: "good first issue"
+- name: good first issue
   color: "7057ff"
   description: "Good for newcomers"
 
-- name: "help wanted"
+- name: help wanted
   color: "008672"
   description: "Extra attention needed"
-
-- name: "dependencies"
-  color: "0366d6"
-  description: "Dependency updates (Renovate/Dependabot)"
-
-# ===================
-# Triage Labels
-# ===================
-- name: "triage: accepted"
-  color: "0e8a16"
-  description: "Issue has been triaged and accepted"
-
-- name: "triage: duplicate"
-  color: "cfd3d7"
-  description: "Duplicate of existing issue"
-  aliases: ["duplicate"]
-
-- name: "triage: invalid"
-  color: "e4e669"
-  description: "Not a valid issue"
-  aliases: ["invalid"]
-
-- name: "triage: wontfix"
-  color: "ffffff"
-  description: "Will not be addressed"
-  aliases: ["wontfix"]
